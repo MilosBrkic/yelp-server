@@ -22,13 +22,9 @@ router.post('/register', function(req, res) {
 	var newUser = new user({ username: req.body.username });
 	user.register(newUser, req.body.password, function(err, user) {
 		if (err) {
-			//req.flash('error', err.message);
-            //return res.render('register');
             return res.status(200).json(err);
 		}
 		passport.authenticate('local')(req, res, function() {
-			//req.flash('success', 'Welcome to YelpCamp!' + user.username);
-            //res.redirect('/campgrounds');
             res.status(200);
             return "uspesno registrovanje";
 		});
@@ -81,38 +77,27 @@ router.get('/logout', function(req, res) {
 //api
 
 // prikazi sve kampove
-
 router.get('/api', function(req, res) {
     campground.find({}, function(err, allCampgrounds) {
-        //res.header("Access-Control-Allow-Origin", "*");
-        //res.header("Access-Control-Allow-Headers", "X-Requested-With");
-        res.status(200);
-        //console.log("da li se nesto desava sa ovim jebenim apijem");
-        res.send({campgrounds: allCampgrounds, currentUser: req.user, a: null});
-        /*if (err) {
-            res.status(200);
-            
-            console.log(err);
+        //res.status(200);
+        //res.send({campgrounds: allCampgrounds, currentUser: req.user, a: null});
+        if (err) {
+            res.status(400);
         } else {
             res.status(200);
-            res.render('api', { campgrounds: allCampgrounds, currentUser: req.user });
-        }*/
+            res.send({campgrounds: allCampgrounds, currentUser: req.user, a: null});
+        }
     });
 });
 
 //ubacivanje kampa
-
 //http://localhost:3000/api?name=ime&image=https://ddl.rs/wp-content/uploads/2019/08/maldivi-plaza-insta.jpg&price=200&description=opis
 router.post('/api', function(req, res) {
-    console.log("new");
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-
+  
     var name = req.query.name;
     var image = req.query.image;
     var price = req.query.price;
     var desc = req.query.description;
-    //console.log(req);
     var author = {
         id: req.query.id,
         username: req.query.username
@@ -122,11 +107,9 @@ router.post('/api', function(req, res) {
     campground.create(newCampground, function(err, newlyCreated) {
         if (err) {
             console.log(err);
+            res.status(400)
             return err;
-        } else {
-            //console.log(newlyCreated);
-            //res.redirect('/campgrounds');
-        }
+        } 
     });
     res.status(200).json({status:"ok"});
 });
@@ -156,7 +139,6 @@ router.put('/api/:id', function(req, res) {
 });
 
 //delete
-
 router.delete('/api/:id', function(req, res) {
     console.log("delete");
     campground.findByIdAndRemove(req.params.id, function(err) {
@@ -167,8 +149,6 @@ router.delete('/api/:id', function(req, res) {
         }
     });
 });
-
-
 
 
 module.exports = router;

@@ -8,6 +8,7 @@ function escapeRegex(text) {
 }
 
 // INDEX - show all campgrounds
+/*
 router.get('/', function(req, res) {
 	if (req.query.search) {
 		const regex = new RegExp(escapeRegex(req.query.search), 'gi');
@@ -29,7 +30,7 @@ router.get('/', function(req, res) {
 			}
 		});
 	}
-});
+});*/
 
 router.get('/searching', function(req, res){
 		const regex = new RegExp(escapeRegex(req.query.search), 'gi');
@@ -45,7 +46,7 @@ router.get('/searching', function(req, res){
 
 // CREATE - add new campground to DB
 
-router.post('/', middleware.isLoggedIn, function(req, res) {
+/*router.post('/', middleware.isLoggedIn, function(req, res) {
 	var name = req.body.name;
 	var image = req.body.image;
 	var price = req.body.price;
@@ -65,44 +66,35 @@ router.post('/', middleware.isLoggedIn, function(req, res) {
 			res.redirect('/campgrounds');
 		}
 	});
-});
+});*/
 
 // NEW - make new campground
 
-router.get('/new', middleware.isLoggedIn, function(req, res) {
+/*router.get('/new', middleware.isLoggedIn, function(req, res) {
 	res.render('campgrounds/new');
-});
+});*/
 
 //SHOW - shows more info about one campground
 
 router.get('/:id', function(req, res) {
 	//find the campground with provided ID and show that campground
 	campground.findById(req.params.id).populate('comments').exec(function(err, foundCampground) {
-		/*if (err) {
-			console.log(err);
-		} else {
-			console.log(foundCampground);
-			res.render('campgrounds/show', { campground: foundCampground });
-		}*/
-		res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "X-Requested-With");
 		res.status(200); 
-		//console.log(foundCampground);      
         res.send({campground: foundCampground});
 	});
 });
 
 //EDIT CAMPGROUNND ROUTE
 
-router.get('/:id/edit', middleware.checkCampgroundOwnership, function(req, res) {
+/*router.get('/:id/edit', middleware.checkCampgroundOwnership, function(req, res) {
 	campground.findById(req.params.id, function(err, foundCampground) {
 		res.render('campgrounds/edit', { campground: foundCampground });
 	});
-});
+});*/
 
 //UPDATE CAMPGROUND ROUTEE
 
-router.put('/:id', middleware.checkCampgroundOwnership, function(req, res) {
+/*router.put('/:id', middleware.checkCampgroundOwnership, function(req, res) {
 	//finnd and update campground
 	campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updaedCampground) {
 		if (err) {
@@ -111,11 +103,11 @@ router.put('/:id', middleware.checkCampgroundOwnership, function(req, res) {
 			res.redirect('/campgrounds/' + req.params.id);
 		}
 	});
-});
+});*/
 
 //DESTROY CAMPGROUND ROUTE
 
-router.delete('/:id', middleware.checkCampgroundOwnership, function(req, res) {
+/*router.delete('/:id', middleware.checkCampgroundOwnership, function(req, res) {
 	campground.findByIdAndRemove(req.params.id, function(err) {
 		if (err) {
 			res.redirect('/campgrounds');
@@ -123,6 +115,6 @@ router.delete('/:id', middleware.checkCampgroundOwnership, function(req, res) {
 			res.redirect('/campgrounds');
 		}
 	});
-});
+});*/
 
 module.exports = router;
