@@ -19,16 +19,18 @@ router.get('/register', function(req, res) {
 // handle sign up logic
 
 router.post('/register', function(req, res) {
+    //res.header("Access-Control-Allow-Origin", "*");
+    //res.header("Access-Control-Allow-Headers", "X-Requested-With");
 	var newUser = new user({ username: req.body.username });
 	user.register(newUser, req.body.password, function(err, user) {
 		if (err) {
-            return res.status(200).json(err);
+            return res.status(401).json(err);
 		}
 		passport.authenticate('local')(req, res, function() {
-            res.status(200);
-            return "uspesno registrovanje";
+            return res.status(200).json({status:"ok"});
 		});
-	});
+    });
+    //return res.status(200).json({status:"okl"});
 });
 
 // show login form
@@ -52,8 +54,8 @@ router.get('/login', function(req, res) {
 );*/
 
 router.post('/login', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    //res.header("Access-Control-Allow-Origin", "*");
+    //res.header("Access-Control-Allow-Headers", "X-Requested-With");
     passport.authenticate('local', function(error, user, info) {
         if(error) {
             return res.status(500).json(error);
